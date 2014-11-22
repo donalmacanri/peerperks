@@ -15,7 +15,7 @@ angular
 			scope: {
 				enabled: '='
 			},
-			template: 'directives/redeem.html',
+			templateUrl: 'js/directives/redeem.html',
 			controller: function($scope) {
 				$scope.selected = {
 					participant: null,
@@ -76,50 +76,6 @@ angular
 					}
 				};
 				
-				// $scope.perks.$add({
-				// 	name: 'Half-hour off early on Friday',
-				// 	points: 25
-				// }).then(function(ref) {
-				// 	var perk = $firebase(ref);
-				// 	perk.$priority = 25;
-				// 	perk.$save();
-				// });
-				
-				// $scope.perks.$add({
-				// 	name: 'Hour off early on Friday',
-				// 	points: 50
-				// }).then(function(ref) {
-				// 	var perk = $firebase(ref);
-				// 	perk.$priority = 50;
-				// 	perk.$save();
-				// });
-				
-				// $scope.perks.$add({
-				// 	name: 'Pick any one task you want to work on',
-				// 	points: 30
-				// }).then(function(ref) {
-				// 	var perk = $firebase(ref);
-				// 	perk.$priority = 30;
-				// 	perk.$save();
-				// });
-				
-				// $scope.perks.$add({
-				// 	name: '$20 Futureshop/Bestbuy Gift card',
-				// 	points: 100
-				// }).then(function(ref) {
-				// 	var perk = $firebase(ref);
-				// 	perk.$priority = 100;
-				// 	perk.$save();
-				// });
-				
-				// $scope.perks.$add({
-				// 	name: '$15 Beverage Package',
-				// 	points: 80
-				// }).then(function(ref) {
-				// 	var perk = $firebase(ref);
-				// 	perk.$priority = 80;
-				// 	perk.$save();
-				// });
 			}
 		};
 	})

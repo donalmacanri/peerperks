@@ -4,17 +4,19 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 	
 	grunt.initConfig({
-		browserify: {
+		uglify: {
 			options: {
-				debug: true
+				mangle: false,
+				sourceMap: true,
+				sourceMapIncludeSources: true,
+				beautify: true
 			},
 			deps: {
 				files: {
 					'build/js/compiled/deps.js': [
+						'app/components/lodash/dist/lodash.js',
 						'web/components/angular/angular.min.js',
 						'web/components/angular-route/angular-route.min.js',
-						'web/components/firebase/firebase.js',
-						'web/components/firebase-simple-login/firebase-simple-login.js',
 						'web/components/angularfire/angularfire.min.js',
 						'web/components/angularjs-gravatardirective/dist/angularjs-gravatardirective.min.js'
 					]
@@ -23,6 +25,7 @@ module.exports = function(grunt) {
 			client: {
 				files: {
 					'build/js/compiled/client.js': [
+						'build/js/app-templates.js',
 						'build/js/compiled/config.app.js',
 						'web/js/client.js',
 						'web/js/directives/**/*.js',
@@ -30,20 +33,16 @@ module.exports = function(grunt) {
 						'web/js/filters/**/*.js'
 					]
 				}
-			}
-		},
-		uglify: {
-			options: {
-				mangle: false
 			},
-			deps: {
+			compress: {
+				options: {
+					compress: true,
+					sourceMap: false,
+					mangle: false
+				},
 				files: {
-					'build/js/compiled/deps.js': ['build/js/compiled/deps.js']
-				}
-			},
-			client: {
-				files: {
-					'build/js/compiled/client.js': ['build/js/compiled/client.js']
+					'build/js/compiled/deps.js': 'build/js/compiled/deps.js',
+					'build/js/compiled/client.js': 'build/js/compiled/client.js'
 				}
 			}
 		},
@@ -70,6 +69,21 @@ module.exports = function(grunt) {
 						'build/css/compiled/base.css'
 					]
 				}
+			}
+		},
+		html2js: {
+			options: {
+				base: '.',
+				module: 'app-templates',
+				rename: function (modulePath) {
+					return modulePath.replace('web/js/', '');
+				}
+			},
+			templates: {
+				src: [
+					'web/js/directives/**/*.html'
+				],
+				dest: 'build/js/app-templates.js'
 			}
 		},
 		clean: {
@@ -145,9 +159,8 @@ module.exports = function(grunt) {
 	grunt.registerTask('server', ['connect:server']);
 	
 	grunt.registerTask('build', ['clean:build', 'build:css', 'build:js', 'copy:build',]);
-	grunt.registerTask('build:js', ['clean:js', 'ngconstant:build', 'browserify:deps', 'browserify:client',]);
+	grunt.registerTask('build:js', ['clean:js', 'html2js:templates', 'ngconstant:build', 'uglify:deps', 'uglify:client']);
 	grunt.registerTask('build:css', ['clean:css', 'sass:build', 'compress:css']);
-	grunt.registerTask('build:dist', ['build', 'compress:js',]);
-	grunt.registerTask('compress:js', ['uglify:deps', 'uglify:client']);
+	grunt.registerTask('build:dist', ['build', 'uglify:compress']);
 	grunt.registerTask('compress:css', ['cssmin:build']);
-}
+};

@@ -15,7 +15,7 @@ angular
 			scope: {
 				enabled: '='
 			},
-			template: 'directives/reward.html',
+			templateUrl: 'js/directives/reward.html',
 			controller: function($scope) {
 				$scope.selected = {
 					participant: null,
@@ -58,46 +58,6 @@ angular
 					});
 				};
 				
-				// $scope.rewards.$add({
-				// 	name: 'Open a pull request',
-				// 	points: 1
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Have your pull request merged',
-				// 	points: 2
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Pull request merged without any reported issues',
-				// 	points: 3
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Approved someone else\'s pull request',
-				// 	points: 1
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Found issue in someone else\’s pull request',
-				// 	points: 2
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Finished on top this week',
-				// 	points: 3
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Kudos from fellow coder',
-				// 	points: 1
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Helpful commit on someone else\'s pull request',
-				// 	points: 1
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Found jshint errors in pull request',
-				// 	points: 1
-				// });
-				// $scope.rewards.$add({
-				// 	name: 'Found broken tests in pull request',
-				// 	points: 1
-				// });
 			}
 		};
 	})

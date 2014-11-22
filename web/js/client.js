@@ -4,7 +4,6 @@ var app = angular.module('ngPeerPerks', [
 		'firebase',
 		'config.app',
 		'ngRoute',
-		'service.lodash',
 		'service.participant',
 		'service.activity',
 		'directive.reward',
@@ -22,7 +21,7 @@ var app = angular.module('ngPeerPerks', [
 		;
 	})
 	
-	.controller('AppCtrl', function ($scope, $firebaseSimpleLogin, $firebase, _, ParticipantService, ActivityService, API_URL) {
+	.controller('AppCtrl', function ($scope, $firebaseSimpleLogin, $firebase, ParticipantService, ActivityService, API_URL) {
 		var loginRef = new Firebase(API_URL);
 		var auth;
 		
