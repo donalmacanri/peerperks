@@ -1,0 +1,42 @@
+[
+	{
+		"name": "Open a pull request",
+		"points": 1
+	},
+	{
+		"name": "Have your pull request merged",
+		"points": 2
+	},
+	{
+		"name": "Pull request merged without any reported issues",
+		"points": 3
+	},
+	{
+		"name": "Approved someone else's pull request",
+		"points": 1
+	},
+	{
+		"name": "Found issue in someone else's pull request",
+		"points": 2
+	},
+	{
+		"name": "Finished on top this week",
+		"points": 3
+	},
+	{
+		"name": "Kudos from fellow coder",
+		"points": 1
+	},
+	{
+		"name": "Helpful commit on someone else's pull request",
+		"points": 1
+	},
+	{
+		"name": "Found jshint errors in pull request",
+		"points": 1
+	},
+	{
+		"name": "Found broken tests in pull request",
+		"points": 1
+	}
+]
