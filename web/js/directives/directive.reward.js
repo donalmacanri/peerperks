@@ -2,6 +2,7 @@
 
 angular
 	.module('directive.reward', [
+		'app-templates',
 		'angularjs-gravatardirective',
 		'service.participant',
 		'service.reward',
@@ -15,7 +16,7 @@ angular
 			scope: {
 				enabled: '='
 			},
-			templateUrl: 'js/directives/reward.html',
+			templateUrl: 'directives/reward.html',
 			controller: function($scope) {
 				$scope.selected = {
 					participant: null,

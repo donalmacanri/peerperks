@@ -2,6 +2,7 @@
 
 angular
 	.module('directive.perk', [
+		'app-templates',
 		'angularjs-gravatardirective',
 		'service.participant',
 		'service.perk',
@@ -15,7 +16,7 @@ angular
 			scope: {
 				enabled: '='
 			},
-			templateUrl: 'js/directives/redeem.html',
+			templateUrl: 'directives/redeem.html',
 			controller: function($scope) {
 				$scope.selected = {
 					participant: null,
