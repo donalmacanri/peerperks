@@ -146,8 +146,8 @@ module.exports = function(grunt) {
 				tasks: ['sass:build', 'cssmin:build']
 			},
 			js: {
-				files: ['test/**/*.spec.js', 'web/js/*.js', 'web/js/directives/**/*.js', 'web/js/services/**/*.js', 'web/js/filters/**/*.js'],
-				tasks: ['uglify:client']
+				files: ['test/**/*.spec.js', 'web/js/*.js', 'web/js/directives/**/*.js', 'web/js/directives/**/*.html', 'web/js/services/**/*.js', 'web/js/filters/**/*.js'],
+				tasks: ['html2js:templates', 'uglify:client']
 			},
 			html: {
 				files: ['web/*.html'],
