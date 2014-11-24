@@ -48,7 +48,7 @@
 			<div class="col-sm-12">
 				<h3>Participants</h3>
 				<ul class="list-group">
-					<li class="list-group-item" ng-repeat="participant in remoteParticipants | orderByPriority">
+					<li class="list-group-item" ng-repeat="participant in participants">
 						<div class="row">
 							<div class="col-sm-2 col-xs-12 text-center">
 								<gravatar-image class="gravatar" data-gravatar-email="participant.email" data-gravatar-size="64" data-gravatar-default="identicon" data-gravatar-css-class="img-circle" data-gravatar-secure="1"></gravatar-image>
@@ -75,7 +75,7 @@
 			<div class="col-sm-12">
 				<h3>Activity</h3>
 				<ul class="list-group">
-					<li class="list-group-item" ng-repeat="activity in activities | orderByPriority">
+					<li class="list-group-item" ng-repeat="activity in activities">
 						<p ng-show="activity.reward">
 							<strong>{{activity.participant.name}}</strong> earned <strong>{{activity.reward.points}} <span class="glyphicon glyphicon-thumbs-up"></span></strong> for <strong>{{activity.reward.name}}</strong>
 						</p>

@@ -22,34 +22,32 @@ angular
 					participant: null,
 					reward: null
 				};
-				$scope.participants = ParticipantService;
+				$scope.participants = ParticipantService.$asArray();
 				
-				$scope.rewards = RewardService;
+				$scope.rewards = RewardService.$asArray();
 				
 				$scope.selectUser = function(participantId) {
-					$scope.selected.participant = $scope.participants.$child(participantId);
+					$scope.selected.participant = $scope.participants.$getRecord(participantId);
 				};
 				
 				$scope.selectReward = function(rewardId) {
-					$scope.selected.reward = $scope.rewards.$child(rewardId);
+					$scope.selected.reward = _.pick($scope.rewards.$getRecord(rewardId), ['name', 'points']);
+					$scope.selected.reward.rewardId = rewardId;
 				};
 				
 				$scope.save = function() {
 					$scope.selected.participant.points.current = $scope.selected.participant.points.current + $scope.selected.reward.points;
 					$scope.selected.participant.points.allTime = $scope.selected.participant.points.allTime + $scope.selected.reward.points;
-					$scope.selected.participant.$child('rewards').$add($scope.selected.reward);
+					ParticipantService.$ref().child($scope.selected.participant.$id).child('rewards').push($scope.selected.reward);
 					$scope.selected.participant.$priority = -Math.abs($scope.selected.participant.points.current);
-					$scope.selected.participant.$save().then(function() {
-						ActivityService.$add({
+					$scope.participants.$save($scope.selected.participant).then(function() {
+						ActivityService.$asArray().$add({
 							participant: $scope.selected.participant,
 							reward: $scope.selected.reward,
-							created: Firebase.ServerValue.TIMESTAMP
+							created: Firebase.ServerValue.TIMESTAMP,
+							$priority: -Math.abs(new Date().getTime())
 						})
 						.then(function(ref) {
-							var activity = $firebase(ref);
-							activity.$priority = -Math.abs(new Date().getTime());
-							activity.$save();
-							
 							// reset
 							$scope.selected.participant = null;
 							$scope.selected.reward = null;

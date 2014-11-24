@@ -23,16 +23,17 @@ angular
 					perk: null
 				};
 				$scope.sufficient = true;
-				$scope.perks = PerkService;
-				$scope.participants = ParticipantService;
+				$scope.perks = PerkService.$asArray();
+				$scope.participants = ParticipantService.$asArray();
 				
 				$scope.selectUser = function(participantId) {
-					$scope.selected.participant = $scope.participants.$child(participantId);
+					$scope.selected.participant = $scope.participants.$getRecord(participantId);
 					$scope.verify();
 				};
 				
 				$scope.selectPerk = function(perkId) {
-					$scope.selected.perk = $scope.perks.$child(perkId);
+					$scope.selected.perk = _.pick($scope.perks.$getRecord(perkId), ['name', 'points']);
+					$scope.selected.perk.perkId = perkId;
 					$scope.verify();
 				};
 				
@@ -54,19 +55,16 @@ angular
 						$scope.selected.participant.points.current = $scope.selected.participant.points.current - $scope.selected.perk.points;
 						$scope.selected.participant.points.redeemed = $scope.selected.participant.points.redeemed + $scope.selected.perk.points;
 						$scope.selected.participant.points.perks = $scope.selected.participant.points.perks + 1;
-						$scope.selected.participant.$child('perks').$add($scope.selected.perk);
+						ParticipantService.$ref().child($scope.selected.participant.$id).child('perks').push($scope.selected.perk);
 						$scope.selected.participant.$priority = -Math.abs($scope.selected.participant.points.current);
-						$scope.selected.participant.$save().then(function() {
-							ActivityService.$add({
+						$scope.participants.$save($scope.selected.participant).then(function() {
+							ActivityService.$asArray().$add({
 								participant: $scope.selected.participant,
 								perk: $scope.selected.perk,
-								created: Firebase.ServerValue.TIMESTAMP
+								created: Firebase.ServerValue.TIMESTAMP,
+								$priority: -Math.abs(new Date().getTime())
 							})
 							.then(function(ref) {
-								var activity = $firebase(ref);
-								activity.$priority = -Math.abs(new Date().getTime());
-								activity.$save();
-								
 								// reset
 								$scope.selected.participant = null;
 								$scope.selected.perk = null;

@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 			deps: {
 				files: {
 					'build/js/compiled/deps.js': [
-						'app/components/lodash/dist/lodash.js',
+						'web/components/lodash/dist/lodash.js',
 						'web/components/angular/angular.min.js',
 						'web/components/angular-route/angular-route.min.js',
 						'web/components/firebase/firebase.js',
@@ -147,7 +147,7 @@ module.exports = function(grunt) {
 			},
 			js: {
 				files: ['test/**/*.spec.js', 'web/js/*.js', 'web/js/directives/**/*.js', 'web/js/services/**/*.js', 'web/js/filters/**/*.js'],
-				tasks: ['browserify:client']
+				tasks: ['uglify:client']
 			},
 			html: {
 				files: ['web/*.html'],
