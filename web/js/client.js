@@ -28,27 +28,27 @@ var app = angular.module('ngPeerPerks', [
 		$scope.error = null;
 		
 		$scope.presence = function() {
-			if ($scope.user.username) {
-				var amOnline = new Firebase(API_URL + '/.info/connected');
-				var presenceRef = new Firebase(API_URL + '/participants/' + $scope.user.username + '/status');
-
-				amOnline.on('value', function(snapshot) {
-					if (snapshot.val()) {
-						presenceRef.onDisconnect().set('offline');
-						presenceRef.set('online');
-					}
-				});
-			}
+			// if ($scope.user.username) {
+			// 	var amOnline = new Firebase(API_URL + '/.info/connected');
+			// 	var presenceRef = new Firebase(API_URL + '/participants/' + $scope.user.username + '/status');
+      //
+			// 	amOnline.on('value', function(snapshot) {
+			// 		if (snapshot.val()) {
+			// 			presenceRef.onDisconnect().set('offline');
+			// 			presenceRef.set('online');
+			// 		}
+			// 	});
+			// }
 		};
 		
 		$scope.participants = ParticipantService.$asArray();
 		
 		if (loginRef.getAuth()) {
-			$scope.user = loginRef.getAuth().github;
+			$scope.user = loginRef.getAuth()[loginRef.getAuth().provider];
 		}
 		
 		$scope.activities = ActivityService.$asArray();
-		$scope.login = function() {
+		$scope.loginWithGithub = function() {
 			loginRef.authWithOAuthPopup('github', function(err, authData) {
 				if (err) {
 					$scope.error = err.message;
@@ -67,10 +67,10 @@ var app = angular.module('ngPeerPerks', [
 				
 				// if not participating yet, then add the user
 				if (!participant) {
-					ParticipantService.$set($scope.user.username, {
+					ParticipantService.$set(authData.uid, {
 						email: ($scope.user.email) ? $scope.user.email : $scope.user.email,
 						name: ($scope.user.displayName) ? $scope.user.displayName : $scope.user.username,
-						username: $scope.user.username,
+						username: authData.uid,
 						points: {
 							current: 0,
 							allTime: 0,
@@ -80,7 +80,7 @@ var app = angular.module('ngPeerPerks', [
 					}).then(function() {
 						$scope.presence();
 						
-						var participantRef = new Firebase(API_URL + '/participants/' + $scope.user.username);
+						var participantRef = new Firebase(API_URL + '/participants/' + authData.uid);
 						var participant = $firebase(participantRef);
 						participant.$priority = 0;
 						participant.$save();
@@ -94,9 +94,56 @@ var app = angular.module('ngPeerPerks', [
 			});
 		};
 		
+		$scope.loginWithGoogle = function() {
+			loginRef.authWithOAuthPopup('google', function(err, authData) {
+				if (err) {
+					$scope.error = err.message;
+					return;
+				}
+
+				$scope.$apply(function() {
+					$scope.user = authData.google;
+				});
+				// successful login
+				$scope.error = null;
+				
+				console.log($scope.user);
+
+				var participant = _.find($scope.participants, function(participant) {
+					return (participant.username === $scope.user.username);
+				});
+				
+				// if not participating yet, then add the user
+				if (!participant) {
+					ParticipantService.$set(authData.uid, {
+						email: ($scope.user.email) ? $scope.user.email : $scope.user.email,
+						name: ($scope.user.displayName) ? $scope.user.displayName : $scope.user.username,
+						username: authData.uid,
+						points: {
+							current: 0,
+							allTime: 0,
+							redeemed: 0,
+							perks: 0
+						}
+					}).then(function() {
+						$scope.presence();
+						
+						var participantRef = new Firebase(API_URL + '/participants/' + authData.uid);
+						var participant = $firebase(participantRef);
+						participant.$priority = 0;
+						participant.$save();
+					});
+				} else {
+					$scope.presence();
+				}
+				
+			}, {
+				scope: 'email'
+			});
+		};
 		$scope.logout = function() {
-			var presenceRef = new Firebase(API_URL + '/participants/' + $scope.user.username + '/status');
-			presenceRef.set('offline');
+			// var presenceRef = new Firebase(API_URL + '/participants/' + $scope.user.username + '/status');
+			// presenceRef.set('offline');
 			loginRef.unauth();
 			$scope.user = null;
 		};

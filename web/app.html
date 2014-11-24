@@ -5,7 +5,8 @@
 	</div>
 	<div class="col-sm-5 col-xs-12">
 		<div class="pull-right">
-			<button ng-hide="user" type="button" class="btn btn-success btn-lg" ng-click="login()">Login</button>
+			<button ng-hide="user" type="button" class="btn btn-success btn-lg" ng-click="loginWithGoogle()">Login with Google</button>
+			<button ng-hide="user" type="button" class="btn btn-success btn-lg" ng-click="loginWithGithub()">Login with Github</button>
 			
 			<div class="btn-group">
 				<button ng-hide="!user || selectReward || selectPerk" type="button" class="btn btn-primary btn-lg" ng-click="selectReward = !selectReward">Reward</button>
