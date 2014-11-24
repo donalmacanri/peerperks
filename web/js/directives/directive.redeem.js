@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-	.module('directive.perk', [
+	.module('directive.redeem', [
 		'app-templates',
 		'angularjs-gravatardirective',
 		'service.participant',
@@ -9,7 +9,7 @@ angular
 		'service.activity',
 		'firebase'
 	])
-	.directive('ppPerk', function($firebase, ParticipantService, PerkService, ActivityService) {
+	.directive('ppRedeem', function($firebase, ParticipantService, PerkService, ActivityService) {
 		return {
 			restrict: 'E',
 			replace: true,

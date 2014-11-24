@@ -7,7 +7,7 @@ var app = angular.module('ngPeerPerks', [
 		'service.participant',
 		'service.activity',
 		'directive.reward',
-		'directive.perk'
+		'directive.redeem'
 	])
 	
 	.config(function ($routeProvider, $locationProvider) {
